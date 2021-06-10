@@ -26,6 +26,9 @@ library
                       , Ch15.Monoid
                       , Ch15.Optional
                       , Ch15.Semigroup
+                      , Ch16.Functor
+                      , Ch16.Possibly
+                      , Ch16.Sum
   ghc-options:          -Wall -fwarn-tabs
   build-depends:        base >=4.7 && <5
 
@@ -35,12 +38,18 @@ test-suite haskellbook-tests
   type:                 exitcode-stdio-1.0
   ghc-options:          -threaded -rtsopts -with-rtsopts=-N
   other-modules:        Utils
+                      , Ch15.ArbitraryTestInstances
                       , Ch15.FirstSpec
                       , Ch15.Laws
                       , Ch15.MadnessSpec
                       , Ch15.MonoidSpec
                       , Ch15.OptionalSpec
                       , Ch15.SemigroupSpec
+                      , Ch16.ArbitraryTestInstances
+                      , Ch16.FunctorLaws
+                      , Ch16.FunctorSpec
+                      , Ch16.PossiblySpec
+                      , Ch16.SumSpec
   build-depends:        base >=4.7 && <5
                       , hspec
                       , QuickCheck
