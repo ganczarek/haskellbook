@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleInstances #-}
+
 module Ch15.SemigroupSpec where
 
 import Ch15.ArbitraryTestInstances ()
@@ -78,9 +80,8 @@ main = hspec $ do
             unCombine (f <> f) 1 `shouldBe` Sum 12
             unCombine (g <> f) 1 `shouldBe` Sum 3
 
-    -- TODO: test associativity law of Combine
-    --    prop "should check Combine associativity law" $
-    --      \f g h x -> combineAssociativityLaw
+    it "should check Combine associativity law" $ do
+      runQuickCheckWithHSpec (associativityLaw :: Combine Bool String -> Combine Bool String -> Combine Bool String -> Bool)
 
     it "should combine two functions wrapped by Comp" $
       let f = Comp $ \n -> n + 5 :: Sum Int
@@ -89,8 +90,6 @@ main = hspec $ do
             unComp (f <> g) 0 `shouldBe` Sum 4
             unComp (f <> g) 10 `shouldBe` Sum 24
             unComp (g <> f) 13 `shouldBe` Sum 30
-
-    -- TODO: test associativity law of Comp
 
     it "should combine Validation success and failure (left side)" $
       Success' 1 <> Failure' "fail" `shouldBe` (Success' 1 :: (Validation String Int))

@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleInstances #-}
+
 module Ch15.ArbitraryTestInstances where
 
 import Ch15.Semigroup
@@ -42,15 +44,11 @@ instance (Arbitrary a, Arbitrary b) => Arbitrary (Or a b) where
     b <- arbitrary
     elements [Fst a, Snd b]
 
---instance Arbitrary (Int -> Int) where
---  arbitrary = do
---    x <- chooseInt (-1000,1000)
---    return Combine $ \n -> Sum (n + x)
---
---combineAssociativityLaw ::
---  Combine Int Int ->
---  Combine Int Int ->
---  Combine Int Int ->
---  Int ->
---  Expectation
---combineAssociativityLaw f g h x = unCombine (f <> (g <> h)) x `shouldBe` unCombine ((f <> g) <> h) x
+instance (CoArbitrary a, Arbitrary b) => Arbitrary (Combine a b) where
+  arbitrary = Combine <$> arbitrary
+
+instance Show (Combine a b) where
+  show (Combine _) = ""
+
+instance Eq b => Eq (Combine Bool b) where
+  Combine f == Combine g = f True == g True && f False == g False
